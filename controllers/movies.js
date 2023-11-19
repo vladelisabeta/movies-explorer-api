@@ -50,7 +50,6 @@ module.exports.createMovie = (req, res, next) => {
     .catch((e) => {
       if (e.name === 'ValidationError') {
         next(new BadRequestError(INVALID_DATA_FILM_CREATE_ERROR_TEXT));
-        console.log("создание карточки");
         return;
       }
       next(e);
@@ -63,7 +62,7 @@ module.exports.getMovies = (req, res, next) => Movie.find({ owner: req.user._id 
   .catch(next);
 
 module.exports.deleteMovieById = (req, res, next) => {
-  const movieId = req.params.movieId;
+  const { movieId } = req.params;
   return Movie.findById(movieId)
     .then((r) => {
       if (r === null) {
@@ -85,4 +84,3 @@ module.exports.deleteMovieById = (req, res, next) => {
       next(e);
     });
 };
-// `${r.owner}`

@@ -49,22 +49,20 @@ module.exports.createUser = (req, res, next) => {
 };
 
 // // GET USER BY ID
-module.exports.getUserById = (req, res, next) => {
-  return User.findById(req.user._id)
-    .then((r) => {
-      if (r === null) {
-        throw new NotFoundError(USER_NOT_FOUND_ERROR_TEXT);
-      }
-      return res.status(HTTP_STATUS_OK).send(r);
-    })
-    .catch((e) => {
-      if (e.name === 'CastError') {
-        next(new BadRequestError(USER_NOT_FOUND_ERROR_TEXT));
-        return;
-      }
-      next(e);
-    });
-};
+module.exports.getUserById = (req, res, next) => User.findById(req.user._id)
+  .then((r) => {
+    if (r === null) {
+      throw new NotFoundError(USER_NOT_FOUND_ERROR_TEXT);
+    }
+    return res.status(HTTP_STATUS_OK).send(r);
+  })
+  .catch((e) => {
+    if (e.name === 'CastError') {
+      next(new BadRequestError(USER_NOT_FOUND_ERROR_TEXT));
+      return;
+    }
+    next(e);
+  });
 
 module.exports.updateUserProfile = (req, res, next) => {
   const { name, email } = req.body;
